@@ -26,6 +26,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	implementation 'com.h2database:h2:2.1.212'
 	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation 'com.google.code.gson:gson:2.10.1'
+
 
 }
 

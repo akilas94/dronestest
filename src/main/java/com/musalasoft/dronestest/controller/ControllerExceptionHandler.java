@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.IOException;
+
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(value = {ValidationException.class})
-    public ResponseEntity<ResponseDto> resourceNotFoundException(ValidationException ex, WebRequest request) {
+    public ResponseEntity<ResponseDto> validationException(ValidationException ex, WebRequest request) {
         ResponseDto message = new ResponseDto();
         message.setStatus("ERROR");
         message.setDescription(ex.getMessage());
