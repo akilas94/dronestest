@@ -3,6 +3,7 @@ package com.musalasoft.dronestest.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,4 +16,6 @@ public class Medication {
     private String code;
     private double weight;
     private String imagePath;
+    @ManyToMany(mappedBy = "medicationList")
+    private List<Orders> orders;
 }

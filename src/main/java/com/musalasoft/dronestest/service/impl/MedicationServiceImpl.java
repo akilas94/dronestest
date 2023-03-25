@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,13 +34,11 @@ public class MedicationServiceImpl implements MedicationService {
     public ResponseDto saveMedicine(MedicationDto medicationDto) throws ValidationException {
         ResponseDto responseDto = new ResponseDto();
         Medication medication = new Medication();
+        validateRequest(medicationDto);
         BeanUtils.copyProperties(medicationDto, medication);
         String path = uploadPath.concat(medicationDto.getFile().getOriginalFilename());
         try {
             uploadFile(medicationDto.getFile());
-//            Files.delete(Path.of(path));
-//            Files.copy(medicationDto.getFile().getInputStream(),
-//                    Path.of(path));
             medication.setImagePath(path);
             Medication medicationSave = medicationRepository.save(medication);
             if (Objects.nonNull(medicationSave)) {
@@ -54,6 +51,16 @@ public class MedicationServiceImpl implements MedicationService {
 
         }
         return responseDto;
+    }
+
+    private void validateRequest(MedicationDto medicationDto) throws ValidationException {
+        if (medicationDto.getName().isEmpty()) {
+            throw new ValidationException("Name can not be empty");
+        }
+        if (!medicationDto.getName().matches("^[a-zA-Z0-9_-]+$")) {
+            throw new ValidationException("Name is in the wrong fromat");
+        }
+
     }
 
     private void uploadFile(MultipartFile file) throws IOException {
