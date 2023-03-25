@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/drones")
 @Slf4j
-public class DronController {
+public class DroneController {
     @Autowired
     private DroneService droneService;
 

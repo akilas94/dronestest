@@ -1,12 +1,10 @@
 package com.musalasoft.dronestest.repository;
 
-import com.musalasoft.dronestest.entity.Drone;
+import com.musalasoft.dronestest.entity.Medication;
+import com.musalasoft.dronestest.entity.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface DroneRepository extends JpaRepository<Drone, Long> {
-
+public interface OrdersRepository extends JpaRepository<Orders, Long> {
 }
