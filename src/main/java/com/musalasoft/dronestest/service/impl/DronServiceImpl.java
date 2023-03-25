@@ -1,5 +1,6 @@
 package com.musalasoft.dronestest.service.impl;
 
+import com.musalasoft.dronestest.constants.AppConstants;
 import com.musalasoft.dronestest.dto.DroneDto;
 import com.musalasoft.dronestest.dto.ResponseDto;
 import com.musalasoft.dronestest.entity.Drone;
@@ -29,8 +30,8 @@ public class DronServiceImpl implements DroneService {
         Drone droneSave = droneRepository.save(drone);
         if(Objects.nonNull(droneSave)){
             responseDto = new ResponseDto();
-            responseDto.setStatus("SUCCESS");
-            responseDto.setDescription("Record Save SuccessFuly");
+            responseDto.setStatus(AppConstants.SUCCESS);
+            responseDto.setDescription(AppConstants.RECORD_SAVED);
         }
         return responseDto;
     }

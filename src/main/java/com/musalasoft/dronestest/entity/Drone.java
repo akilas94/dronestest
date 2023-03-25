@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@Table(name = "drone")
 public class Drone {
 
     @Id
