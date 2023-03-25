@@ -28,7 +28,7 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public ResponseDto saveDrone(DroneDto droneDto) throws ValidationException {
         validateRequest(droneDto);
-        ResponseDto responseDto = new ResponseDto();
+        ResponseDto responseDto = null;
         Drone drone = new Drone();
         BeanUtils.copyProperties(droneDto, drone);
         Drone droneSave = droneRepository.save(drone);
@@ -40,6 +40,28 @@ public class DroneServiceImpl implements DroneService {
         return responseDto;
     }
 
+    @Override
+    public ResponseDto updateBattery(DroneDto droneDto) {
+        ResponseDto responseDto = new ResponseDto();
+        if(droneRepository.updateBatteryByDroneId(droneDto.getId(), droneDto.getBatterCapacity()) > 0){
+            responseDto.setStatus(AppConstants.SUCCESS);
+            responseDto.setDescription(AppConstants.RECORD_UPDATED);
+
+        }
+        return responseDto;
+    }
+
+    @Override
+    public ResponseDto updateState(DroneDto droneDto) {
+        ResponseDto responseDto = new ResponseDto();
+        if(droneRepository.updateStatusByDroneId(droneDto.getId(), droneDto.getState().toString()) > 0){
+            responseDto.setStatus(AppConstants.SUCCESS);
+            responseDto.setDescription(AppConstants.RECORD_UPDATED);
+
+        }
+        return responseDto;
+    }
+
     private void validateRequest(DroneDto droneDto) throws ValidationException {
         if (droneDto.getSerialNumber().isEmpty()) {
             throw new ValidationException("Serial Number Cannot be empty");
@@ -47,7 +69,7 @@ public class DroneServiceImpl implements DroneService {
         if (droneDto.getSerialNumber().length() > 100) {
             throw new ValidationException("Serial Number length Cannot be getter than 100");
         }
-        if (droneDto.getWeight() <= deliveryWeight) {
+        if (droneDto.getWeight() > deliveryWeight) {
             throw new ValidationException("Delivery weight must be euqal or low than ".
                     concat(String.valueOf(deliveryWeight)));
         }

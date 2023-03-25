@@ -1,5 +1,6 @@
 package com.musalasoft.dronestest.entity;
 
+import com.musalasoft.dronestest.enums.OrderStatus;
 import lombok.Data;
 
 import javax.persistence.*;
