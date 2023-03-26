@@ -20,4 +20,5 @@ public interface DroneRepository extends JpaRepository<Drone, Long> {
     @Query(value = "UPDATE drone SET batter_capacity =?2 WHERE id=?1", nativeQuery = true)
     int updateBatteryByDroneId(Long id, double batterCapacity);
 
+    Optional<Drone> findBySerialNumber(String serialNumber);
 }

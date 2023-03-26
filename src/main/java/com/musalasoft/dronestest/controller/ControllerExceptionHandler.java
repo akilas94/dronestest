@@ -1,5 +1,6 @@
 package com.musalasoft.dronestest.controller;
 
+import com.musalasoft.dronestest.constants.AppConstants;
 import com.musalasoft.dronestest.dto.ResponseDto;
 import com.musalasoft.dronestest.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {ValidationException.class})
     public ResponseEntity<ResponseDto> validationException(ValidationException ex, WebRequest request) {
         ResponseDto message = new ResponseDto();
-        message.setStatus("ERROR");
+        message.setStatus(AppConstants.ERROR);
         message.setDescription(getConfigValue(ex.getMessage()));
 
-        return new ResponseEntity<ResponseDto>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getConfigValue(String key) {

@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
+import static com.musalasoft.dronestest.constants.ErrorMessages.*;
+
 @Service
 @Transactional
 public class OrdersServiceImpl implements OrdersService {
@@ -51,17 +53,17 @@ public class OrdersServiceImpl implements OrdersService {
             drone = droneRepository.save(drone);
             orders.setDrone(drone);
         } else {
-            throw new ValidationException("Drone doesn't exist");
+            throw new ValidationException(DRONES_EXIST);
         }
         Double weightOfAllItems = medicationRepository.findWeightOfAllItems(orderRequestDto.getMedicationList());
         if (weightOfAllItems > orders.getDrone().getWeight()) {
-            throw new ValidationException("Weight must be under 500g");
+            throw new ValidationException(MUST_BE_UNDER_WEIGHT);
         }
         List<Medication> medicationList = medicationRepository.findAllById(orderRequestDto.getMedicationList());
         if (medicationList.size() > 0) {
             orders.setMedicationList(medicationList);
         } else {
-            throw new ValidationException("At least need one medicine to make a order");
+            throw new ValidationException(PLACE_ORDER_ERROR);
         }
         orders.setOrderDateTime(new Date());
 
@@ -102,8 +104,13 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     private void validateDrone(Drone drone) throws ValidationException {
+
+        if(!drone.getState().equals(State.IDLE)){
+            throw new ValidationException(DRONE_ISNOT_AVAILABLE);
+        }
+
         if (drone.getBatterCapacity() < deliveryBatteryLevel) {
-            throw new ValidationException("Battery is not enough for loading");
+            throw new ValidationException(BATTERY_ISNOT_ENOUGH);
         }
     }
 

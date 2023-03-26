@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Objects;
 
-import static com.musalasoft.dronestest.constants.ErrorMessages.EROR1;
+import static com.musalasoft.dronestest.constants.ErrorMessages.*;
 
 @Service
 @Transactional
@@ -45,7 +45,7 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public ResponseDto updateBattery(DroneDto droneDto) {
         ResponseDto responseDto = new ResponseDto();
-        if(droneRepository.updateBatteryByDroneId(droneDto.getId(), droneDto.getBatterCapacity()) > 0){
+        if (droneRepository.updateBatteryByDroneId(droneDto.getId(), droneDto.getBatterCapacity()) > 0) {
             responseDto.setStatus(AppConstants.SUCCESS);
             responseDto.setDescription(AppConstants.RECORD_UPDATED);
 
@@ -56,7 +56,7 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public ResponseDto updateState(DroneDto droneDto) {
         ResponseDto responseDto = new ResponseDto();
-        if(droneRepository.updateStatusByDroneId(droneDto.getId(), droneDto.getState().toString()) > 0){
+        if (droneRepository.updateStatusByDroneId(droneDto.getId(), droneDto.getState().toString()) > 0) {
             responseDto.setStatus(AppConstants.SUCCESS);
             responseDto.setDescription(AppConstants.RECORD_UPDATED);
 
@@ -66,14 +66,19 @@ public class DroneServiceImpl implements DroneService {
 
     private void validateRequest(DroneDto droneDto) throws ValidationException {
         if (droneDto.getSerialNumber().isEmpty()) {
-            throw new ValidationException(EROR1);
+            throw new ValidationException(SERIAL_NUMBER_CANNOT_BE_EMPTY);
         }
+
+        if (droneRepository.findBySerialNumber(droneDto.getSerialNumber()).isPresent()) {
+            throw new ValidationException(SERIAL_NUMBER_CANNOT_DUPLICATE);
+        }
+
         if (droneDto.getSerialNumber().length() > 100) {
-            throw new ValidationException("Serial Number length Cannot be getter than 100");
+            throw new ValidationException(SERIAL_NUMBER_LENGTH);
         }
+
         if (droneDto.getWeight() > deliveryWeight) {
-            throw new ValidationException("Delivery weight must be euqal or low than ".
-                    concat(String.valueOf(deliveryWeight)));
+            throw new ValidationException(DRONE_WEIGHT_LIMIT);
         }
     }
 }
