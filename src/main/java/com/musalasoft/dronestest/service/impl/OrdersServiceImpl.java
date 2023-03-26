@@ -16,6 +16,7 @@ import com.musalasoft.dronestest.repository.OrdersRepository;
 import com.musalasoft.dronestest.service.OrdersService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,9 @@ import java.util.*;
 @Service
 @Transactional
 public class OrdersServiceImpl implements OrdersService {
+
+    @Value("${drone.delivery.batterylevel}")
+    private double deliveryBatteryLevel;
 
     @Autowired
     private DroneRepository droneRepository;
@@ -42,6 +46,7 @@ public class OrdersServiceImpl implements OrdersService {
         Orders orders = new Orders();
         if (optionalDrone.isPresent()) {
             drone = optionalDrone.get();
+            validateDrone(drone);
             drone.setState(State.LOADING);
             drone = droneRepository.save(drone);
             orders.setDrone(drone);
@@ -95,5 +100,12 @@ public class OrdersServiceImpl implements OrdersService {
         });
         return medicationDtos;
     }
+
+    private void validateDrone(Drone drone) throws ValidationException {
+        if (drone.getBatterCapacity() < deliveryBatteryLevel) {
+            throw new ValidationException("Battery is not enough for loading");
+        }
+    }
+
 
 }
