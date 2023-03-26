@@ -6,5 +6,9 @@ import com.musalasoft.dronestest.exception.ValidationException;
 
 public interface DroneService {
 
-    public ResponseDto saveDrone(DroneDto droneDto) throws ValidationException;
+    ResponseDto saveDrone(DroneDto droneDto) throws ValidationException;
+
+    ResponseDto updateBattery(DroneDto droneDto);
+
+    ResponseDto updateState(DroneDto droneDto);
 }

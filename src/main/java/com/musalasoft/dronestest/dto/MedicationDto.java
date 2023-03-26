@@ -1,5 +1,6 @@
 package com.musalasoft.dronestest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,5 +10,6 @@ public class MedicationDto {
     private String name;
     private String code;
     private double weight;
+    @JsonIgnore
     private MultipartFile file;
 }

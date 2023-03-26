@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class OrdersDto {
+public class OrderRequestDto {
     private Long droneId;
     private List<Long> medicationList;
 }
