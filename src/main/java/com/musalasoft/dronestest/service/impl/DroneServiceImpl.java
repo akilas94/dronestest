@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Objects;
 
+import static com.musalasoft.dronestest.constants.ErrorMessages.EROR1;
+
 @Service
 @Transactional
 public class DroneServiceImpl implements DroneService {
@@ -64,7 +66,7 @@ public class DroneServiceImpl implements DroneService {
 
     private void validateRequest(DroneDto droneDto) throws ValidationException {
         if (droneDto.getSerialNumber().isEmpty()) {
-            throw new ValidationException("Serial Number Cannot be empty");
+            throw new ValidationException(EROR1);
         }
         if (droneDto.getSerialNumber().length() > 100) {
             throw new ValidationException("Serial Number length Cannot be getter than 100");
