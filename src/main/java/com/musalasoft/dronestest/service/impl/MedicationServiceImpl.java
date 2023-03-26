@@ -20,6 +20,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+import static com.musalasoft.dronestest.constants.ErrorMessages.*;
+
 @Service
 @Slf4j
 public class MedicationServiceImpl implements MedicationService {
@@ -55,10 +57,22 @@ public class MedicationServiceImpl implements MedicationService {
 
     private void validateRequest(MedicationDto medicationDto) throws ValidationException {
         if (medicationDto.getName().isEmpty()) {
-            throw new ValidationException("Name can not be empty");
+            throw new ValidationException(NAME_CANOT_BE_EMPTY);
         }
+        if (medicationDto.getCode().isEmpty()) {
+            throw new ValidationException(CODE_CANOT_BE_EMPTY);
+        }
+
+        if (medicationRepository.findByNameAndCode(medicationDto.getName(), medicationDto.getCode()).isPresent()) {
+            throw new ValidationException(MEDICATION_CANOT_BE_EMPTY);
+        }
+
+        if (medicationDto.getName().isEmpty()) {
+            throw new ValidationException(NAME_CANOT_BE_EMPTY);
+        }
+
         if (!medicationDto.getName().matches("^[a-zA-Z0-9_-]+$")) {
-            throw new ValidationException("Name is in the wrong fromat");
+            throw new ValidationException(NAME_WRONG_FORMAT);
         }
 
     }
