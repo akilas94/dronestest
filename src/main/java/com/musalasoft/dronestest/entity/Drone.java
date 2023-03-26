@@ -23,4 +23,14 @@ public class Drone {
     @Enumerated(EnumType.STRING)
     private State state;
 
+    public Drone() {
+    }
+
+    public Drone(String serialNumber, Model model, double weight, double batterCapacity, State state) {
+        this.serialNumber = serialNumber;
+        this.model = model;
+        this.weight = weight;
+        this.batterCapacity = batterCapacity;
+        this.state = state;
+    }
 }
