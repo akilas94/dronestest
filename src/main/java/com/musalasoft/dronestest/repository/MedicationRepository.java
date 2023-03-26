@@ -13,6 +13,4 @@ public interface MedicationRepository extends JpaRepository<Medication, Long> {
 
     Optional<Medication> findByNameAndCode(String name, String code);
 
-    @Query(value = "select sum(weight)  from medication m  where m.id  in (?1)", nativeQuery = true)
-    Double findWeightOfAllItems(List<Long> ids);
 }

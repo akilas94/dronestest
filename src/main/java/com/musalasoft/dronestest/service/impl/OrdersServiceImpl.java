@@ -55,7 +55,7 @@ public class OrdersServiceImpl implements OrdersService {
         } else {
             throw new ValidationException(DRONES_EXIST);
         }
-        Double weightOfAllItems = medicationRepository.findWeightOfAllItems(orderRequestDto.getMedicationList());
+        Double weightOfAllItems = getWeightOfAllItems(orderRequestDto.getMedicationList());
         if (weightOfAllItems > orders.getDrone().getWeight()) {
             throw new ValidationException(MUST_BE_UNDER_WEIGHT);
         }
@@ -112,6 +112,18 @@ public class OrdersServiceImpl implements OrdersService {
         if (drone.getBatterCapacity() < deliveryBatteryLevel) {
             throw new ValidationException(BATTERY_ISNOT_ENOUGH);
         }
+    }
+
+    private double getWeightOfAllItems(List<Long> list){
+        double [] weight = new double[1];
+        list.forEach(id -> {
+            Optional<Medication> medication = medicationRepository.findById(id);
+            if(medication.isPresent()){
+                weight[0]=weight[0]+medication.get().getWeight();
+            }
+
+        });
+        return weight[0];
     }
 
 
